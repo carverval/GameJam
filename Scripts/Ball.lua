@@ -5,7 +5,7 @@ function Ball:new()
   Ball.super.new()
 end
 
-function Asteroid:update(dt)
+function Ball:update(dt)
   Ball.super.update(self, dt)
 end
 
