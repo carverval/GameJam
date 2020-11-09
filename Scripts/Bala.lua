@@ -19,7 +19,8 @@ function Bala:update(dt)
     table.remove(balaList, key)
     print("HOLA")
   end
-  end
+end
+
 end
 
 
