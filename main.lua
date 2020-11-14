@@ -4,13 +4,15 @@ minaList={}
 enemyList={}
 enemyBalaList={}
 tankList={}
+menu = love.graphics.newImage("Textures/Menu.png")
 local Tank = Tank or require "Scripts/Tank"
 local Canon = Canon or require "Scripts/Canon"
 local Vector = Vector or require "Scripts/vector"
 local EnemyTank = EnemyTank or require "Scripts/EnemyTank"
 local Timer = Timer or require "Scripts/Timer"
-
-
+gamestate= "menu"
+w,h = love.graphics.getDimensions()
+Font = love.graphics.newFont("Fonts/Gameplay.ttf", 20)
 
 function love.load()
   background = love.graphics.newImage("Textures/BackGround.jpeg")
@@ -29,6 +31,12 @@ function love.load()
 end
 
 function love.update(dt)
+  if gamestate=="menu" then
+    if love.keyboard.isDown("return") then
+      gamestate="game"
+    end
+  end --Menu state end
+  if gamestate=="game" then
   for _,v in ipairs(balaList) do
     v:update(dt)
   end
@@ -47,10 +55,19 @@ function love.update(dt)
   for _,v in ipairs(actorList) do
     v:update(dt)
   end
-  
+  end --Game state end
 end
 
 function love.draw()
+  if gamestate=="menu" then
+  love.graphics.draw(menu)
+  love.graphics.setFont(Font)
+  love.graphics.print("PRESS ENTER", w/2-80, h/2+50)
+  love.graphics.print("TO PLAY", w/2-50, h/2+80)
+  love.graphics.print("PRESS ESC", w/2-60, h/2+145)
+  love.graphics.print("TO QUIT", w/2-40, h/2+175)
+  end --Menu state end
+  if gamestate=="game" then 
    love.graphics.draw(background, 0, 0)
   for _,v in ipairs(minaList) do
     v:draw()
@@ -70,7 +87,7 @@ function love.draw()
   for _,v in ipairs(actorList) do
     v:draw()
   end
-  
+end --Game State end
 end
 function love.keypressed(key)
   for _,v in ipairs(tankList) do
