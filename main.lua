@@ -5,6 +5,7 @@ enemyList={}
 enemyBalaList={}
 tankList={}
 timerList={}
+muroList={}
 menu = love.graphics.newImage("Textures/Menu.png")
 local Tank = Tank or require "Scripts/Tank"
 local Canon = Canon or require "Scripts/Canon"
@@ -12,9 +13,11 @@ local Vector = Vector or require "Scripts/vector"
 local EnemyTank = EnemyTank or require "Scripts/EnemyTank"
 local Timer = Timer or require "Scripts/Timer"
 local Score = Score or require "Scripts/Score"
+local Muro = Muro or require "Scripts/Muro"
 gamestate= "menu"
 w,h = love.graphics.getDimensions()
 Font = love.graphics.newFont("Fonts/Gameplay.ttf", 20)
+ 
 
 function love.load()
   background = love.graphics.newImage("Textures/BackGround.jpeg")
@@ -27,7 +30,18 @@ function love.load()
   s= Score:extend()
   s:new()
   table.insert(actorList, s)
-  
+  --local m = Muro(117,367, 1)
+  --table.insert(muroList, m)           Se intentó hacer bloques de Muro pero no se supo hacer las colisiones con el Tank player y los Tank enemigos
+  --local m = Muro(206,367, 1)
+  --table.insert(muroList, m)
+  --local m = Muro(250, 411, 2)
+  --table.insert(muroList, m)
+  --local m = Muro(485,174, 1)
+  --table.insert(muroList, m)
+  --local m = Muro(574,174, 1)
+  --table.insert(muroList, m)
+  --m = Muro(485, 85, 2)
+  --table.insert(muroList, m)
   
   l=Timer:extend()
   table.insert(timerList, l)
@@ -59,6 +73,9 @@ function love.update(dt)
   for _,v in ipairs(balaList) do
     v:update(dt)
   end
+  --for _,v in ipairs(muroList) do
+    --v:update(dt)
+  --end
   for _,v in ipairs(enemyBalaList) do
     v:update(dt)
   end
@@ -95,7 +112,10 @@ if gamestate=="gameover" then
   if gamestate=="restart" then
     for i, all in ipairs(actorList) do
   table.remove(actorList, i)
-  end
+end
+--for i, all in ipairs(muroList) do
+  --table.remove(muroList, i)
+  --end
   for i, all in ipairs(balaList) do
   table.remove(balaList, i)
   end
@@ -117,7 +137,7 @@ if gamestate=="gameover" then
 
   love.load()
   if restarting==false then
-   r=Timer(5, Restart, false)
+   r=Timer(4, Restart, false)
    restarting=true
   end
   r:update(dt)
@@ -141,6 +161,9 @@ end
 
   if gamestate=="game" then 
    love.graphics.draw(background, 0, 0)
+   --for _,v in ipairs(muroList) do
+    --v:draw()
+  --end
   for _,v in ipairs(minaList) do
     v:draw()
   end
@@ -183,6 +206,7 @@ function love.keypressed(key)
   end
 end
 function EnemySpawn()
+  math.randomseed(os.time())
   randomSpawner = math.random(1,4)
   if randomSpawner == 1 then
      e = EnemyTank(math.random(-100, 800), -50)--Top
