@@ -32,10 +32,20 @@ end
 
 function love.update(dt)
   if gamestate=="menu" then
+    timer=0
     if love.keyboard.isDown("return") then
-      gamestate="game"
+      gamestate="loading"
     end
   end --Menu state end
+  if gamestate== "loading" then
+    timer= timer+dt
+    if timer>=3 then
+      gamestate="game"
+    end
+  end
+  
+    
+    
   if gamestate=="game" then
   for _,v in ipairs(balaList) do
     v:update(dt)
@@ -66,7 +76,11 @@ function love.draw()
   love.graphics.print("TO PLAY", w/2-50, h/2+80)
   love.graphics.print("PRESS ESC", w/2-60, h/2+145)
   love.graphics.print("TO QUIT", w/2-40, h/2+175)
-  end --Menu state end
+end --Menu state end
+if gamestate=="loading" then
+  
+end
+
   if gamestate=="game" then 
    love.graphics.draw(background, 0, 0)
   for _,v in ipairs(minaList) do
