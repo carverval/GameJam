@@ -1,10 +1,11 @@
 local Actor = Actor or require "Scripts/actor"
 local Vector = Vector or require "Scripts/vector"
 local EnemyTank = EnemyTank or require "Scripts/enemyTank"
+local Score = Score or require "Scripts/Score"
 local Bala = Actor:extend()
 
 
-
+s = Score:extend()
 function Bala:new(x,y,fwdX,fwdY, r)
   Bala.super.new(self, "Textures/Bala.png", x, y, 400, fwdX, fwdY)
   self.forward:normalize()
@@ -40,12 +41,15 @@ end
 function balaCollision()
   for x, enemy in ipairs(enemyList) do
    for i, bala in ipairs(balaList) do
-     for a, timer in ipairs(actorList) do
+     for a, timer in ipairs(timerList) do
      if enemy.position.x+enemy.width > bala.position.x and enemy.position.x < bala.position.x+bala.width and enemy.position.y+enemy.height > bala.position.y and enemy.position.y < bala.position.y+bala.height then
-       if enemy.position.x+enemy.width > timer.position.x and enemy.position.x < timer.position.x+timer.width and enemy.position.y+enemy.height > timer.position.y and enemy.position.y < timer.position.y+timer.height then
        table.remove(balaList, i)
-       table.remove(actorList, a)
+       if enemy.position.x+enemy.width > timer.position.x and enemy.position.x < timer.position.x+timer.width and enemy.position.y+enemy.height > timer.position.y and enemy.position.y < timer.position.y+timer.height then
+       
+       table.remove(timerList, a)
        table.remove(enemyList, x)
+       s.points=s.points+10*s.combo
+       s.combo=s.combo+1
      end
    end
    end

@@ -4,12 +4,14 @@ minaList={}
 enemyList={}
 enemyBalaList={}
 tankList={}
+timerList={}
 menu = love.graphics.newImage("Textures/Menu.png")
 local Tank = Tank or require "Scripts/Tank"
 local Canon = Canon or require "Scripts/Canon"
 local Vector = Vector or require "Scripts/vector"
 local EnemyTank = EnemyTank or require "Scripts/EnemyTank"
 local Timer = Timer or require "Scripts/Timer"
+local Score = Score or require "Scripts/Score"
 gamestate= "menu"
 w,h = love.graphics.getDimensions()
 Font = love.graphics.newFont("Fonts/Gameplay.ttf", 20)
@@ -22,10 +24,13 @@ function love.load()
   c = Canon:extend()
   c:new()
   table.insert(tankList, c)
+  s= Score:extend()
+  s:new()
+  table.insert(actorList, s)
   
   
   l=Timer:extend()
-  table.insert(actorList, l)
+  table.insert(timerList, l)
   l:new(4, EnemySpawn, true)
   
 end
@@ -35,6 +40,9 @@ function love.update(dt)
     timer=0
     if love.keyboard.isDown("return") then
       gamestate="loading"
+    end
+    if love.keyboard.isDown("escape") then
+      love.event.quit(0)
     end
   end --Menu state end
   if gamestate== "loading" then
@@ -47,6 +55,7 @@ function love.update(dt)
     
     
   if gamestate=="game" then
+    restarting=false
   for _,v in ipairs(balaList) do
     v:update(dt)
   end
@@ -65,7 +74,55 @@ function love.update(dt)
   for _,v in ipairs(actorList) do
     v:update(dt)
   end
-  end --Game state end
+  for _,v in ipairs(timerList) do
+    v:update(dt)
+  end
+end --Game state end
+if gamestate=="gameover" then
+  if love.keyboard.isDown("r") then
+      gamestate="restart"
+      keyPushed="r"
+    end
+    if love.keyboard.isDown("m") then
+      gamestate="restart"
+      keyPushed="m"
+    end
+    if love.keyboard.isDown("escape") then
+      love.event.quit(0)
+    end
+  end
+  
+  if gamestate=="restart" then
+    for i, all in ipairs(actorList) do
+  table.remove(actorList, i)
+  end
+  for i, all in ipairs(balaList) do
+  table.remove(balaList, i)
+  end
+  for i, all in ipairs(tankList) do
+  table.remove(tankList, i)
+  end
+  for i, all in ipairs(enemyBalaList) do
+  table.remove(enemyBalaList, i)
+  end
+  for i, all in ipairs(minaList) do
+  table.remove(minaList, i)
+  end
+  for i, all in ipairs(enemyList) do
+  table.remove(enemyList, i)
+  end
+  for i, all in ipairs(timerList) do
+  table.remove(timerList , i)
+  end
+
+  love.load()
+  if restarting==false then
+   r=Timer(5, Restart, false)
+   restarting=true
+  end
+  r:update(dt)
+  end
+  
 end
 
 function love.draw()
@@ -78,7 +135,8 @@ function love.draw()
   love.graphics.print("TO QUIT", w/2-40, h/2+175)
 end --Menu state end
 if gamestate=="loading" then
-  
+  local menu=love.graphics.newImage("Textures/MENU_LOADING.png")
+  love.graphics.draw(menu, 0, 0)
 end
 
   if gamestate=="game" then 
@@ -101,7 +159,21 @@ end
   for _,v in ipairs(actorList) do
     v:draw()
   end
+  for _,v in ipairs(timerList) do
+    v:draw()
+  end
 end --Game State end
+if gamestate=="restart" then
+  rest=love.graphics.newImage("Textures/MENU_RESTARTING.png")
+  love.graphics.draw(rest, 0, 0)
+end
+if gamestate=="gameover" then
+  over= love.graphics.newImage("Textures/MENU_GAME_OVER.png")
+  love.graphics.draw(over,0,0)
+  love.graphics.setFont(Font)
+  love.graphics.print("SCORE: " , w/2-30,h/2+100)
+  love.graphics.print(s.points , w/2+55,h/2+100)
+end
 end
 function love.keypressed(key)
   for _,v in ipairs(tankList) do
@@ -130,3 +202,11 @@ function EnemySpawn()
   end
   
 end
+function Restart()
+   if keyPushed=="r" then
+      gamestate="game"
+    end
+    if keyPushed=="m" then
+      gamestate="menu"
+    end
+  end

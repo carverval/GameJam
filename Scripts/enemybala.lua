@@ -1,9 +1,10 @@
 local Actor = Actor or require "Scripts/actor"
 local Vector = Vector or require "Scripts/vector"
+local Score = Score or require "Scripts/Score"
 local enemyBala = Actor:extend()
 
 
-
+s = Score:extend()
 function enemyBala:new(x,y,fwdX,fwdY, r)
   enemyBala.super.new(self, "Textures/Bala.png", x, y, 400, fwdX, fwdY)
   self.forward:normalize()
@@ -39,6 +40,8 @@ function balaEnemyCollision()
    for i, bala in ipairs(enemyBalaList) do
      if tank.position.x+tank.width > bala.position.x and tank.position.x < bala.position.x+bala.width and tank.position.y+tank.height > bala.position.y and tank.position.y < bala.position.y+bala.height then
        table.remove(enemyBalaList, i)
+       s.lives=s.lives-1
+       s.combo=1
        
        
        

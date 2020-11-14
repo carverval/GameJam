@@ -10,7 +10,7 @@ t=Tank:extend()
 function EnemyTank:new(x,y)
   EnemyTank.super.new(self, "Textures/EnemyTank.png", x, y, 60)
   f = Timer:extend()
-  table.insert(actorList, f)
+  table.insert(timerList, f)
   f:new(3, Shoot, true,x,y)
   
   
@@ -18,6 +18,8 @@ end
 
 function EnemyTank:update(dt)
   f.position=self.position
+  f.height=self.height
+  f.width=self.width
   EnemyTank.super.update(self, dt)
   self.forward=(t.position-self.position):normalize()
   fwd=Vector.new(t.position.x-self.position.x, t.position.y-self.position.y)
