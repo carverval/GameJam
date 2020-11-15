@@ -15,6 +15,7 @@ function Tank:new()
   Tank.super.new(self, "Textures/Tank.png", 400,300,0,0,-1)
   self.rotSpeed=0
   minas=5
+  mine=love.graphics.newImage("Textures/Mina.png")
 end
 
 function Tank:update(dt)
@@ -63,6 +64,34 @@ function Tank:draw()
   sy = self.scale.y
   rr = self.rot
   love.graphics.draw(self.image,xx,yy,rr,sx,sy,ox,oy,0,0)
+  if minas==5 then
+    love.graphics.draw(mine, 20,50)
+    love.graphics.draw(mine, 50,50)
+    love.graphics.draw(mine, 80,50)
+    love.graphics.draw(mine, 110,50)
+    love.graphics.draw(mine, 140,50)
+  end
+  if minas==4 then
+    love.graphics.draw(mine, 20,50)
+    love.graphics.draw(mine, 50,50)
+    love.graphics.draw(mine, 80,50)
+    love.graphics.draw(mine, 110,50)
+    
+  end
+  if minas==3 then
+    love.graphics.draw(mine, 20,50)
+    love.graphics.draw(mine, 50,50)
+    love.graphics.draw(mine, 80,50)
+    
+  end
+  if minas==2 then
+     love.graphics.draw(mine, 20,50)
+    love.graphics.draw(mine, 50,50)
+   
+  end
+  if minas==1 then
+     love.graphics.draw(mine, 20,50)
+  end
 end
 function Tank:keyPressed(key)
   if key == "v" then

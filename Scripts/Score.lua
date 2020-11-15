@@ -3,12 +3,15 @@ local Score = Actor:extend()
 Font = love.graphics.newFont("Fonts/Gameplay.ttf", 24)
 local w,h = love.graphics.getDimensions()
 
+
+
 function Score:new()
 Score.super.new()
 self.points = 0
 self.lives = 3
 self.image = love.graphics.newImage("Textures/life.png")
 self.combo=1
+
 end
 
 function Score:update(dt)
@@ -32,9 +35,11 @@ function Score:draw()
   
     if self.lives==1 then
     love.graphics.draw(self.image, 20,20, 0, 0.1)
-    end
+  end
+  
+  
+  
   love.graphics.setFont(Font)
-  print(self.lives)
   love.graphics.print(self.points, w-200, 20)
 end
 

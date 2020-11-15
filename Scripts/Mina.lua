@@ -1,9 +1,10 @@
 local Actor = Actor or require "Scripts/actor"
 local Vector = Vector or require "Scripts/vector"
+local Score = Score or require "Scripts/Score"
 local Mina = Actor:extend()
 
 
-
+s = Score:extend()
 function Mina:new(x,y)
   Mina.super.new(self, "Textures/Mina.png", x, y)
   self.speed=0
@@ -33,6 +34,8 @@ for x, enemy in ipairs(enemyList) do
      if enemy.position.x+enemy.width > mina.position.x and enemy.position.x < mina.position.x+mina.width and enemy.position.y+enemy.height > mina.position.y and enemy.position.y < mina.position.y+mina.height then
        table.remove(minaList, i)
        table.remove(enemyList, x)
+       s.points=s.points+10*s.combo
+       s.combo=s.combo+1
      
    end
    end

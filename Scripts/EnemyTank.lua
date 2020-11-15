@@ -20,6 +20,7 @@ function EnemyTank:update(dt)
   f.position=self.position
   f.height=self.height
   f.width=self.width
+  f.rot=self.rot
   EnemyTank.super.update(self, dt)
   self.forward=(t.position-self.position):normalize()
   fwd=Vector.new(t.position.x-self.position.x, t.position.y-self.position.y)

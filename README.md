@@ -1,4 +1,4 @@
-GameJam
+GameJam/TANK ATTACK
 
 Pel moviment utilitzem WASD
 Per col·locar una mina V
