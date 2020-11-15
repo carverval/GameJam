@@ -1,6 +1,6 @@
 local Actor = Actor or require "Scripts/actor"
 local Vector = Vector or require "Scripts/vector"
-local EnemyTank = EnemyTank or require "Scripts/enemyTank"
+local EnemyTank = EnemyTank or require "Scripts/EnemyTank"
 local Score = Score or require "Scripts/Score"
 local Bala = Actor:extend()
 
